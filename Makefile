@@ -17,6 +17,8 @@ GOX = $(BIN)/gox
 GOLINT = $(BIN)/golint
 GODEP = $(BIN)/dep
 
+default: build
+
 local: $(BASE) deps $(GOX) fmt lint vet test
 	cd $(BASE) && $(GOX) \
 		-ldflags '-X $(NAMESPACE)/$(PACKAGE)/cmd.Version=$(VERSION)' \
