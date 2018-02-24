@@ -1,8 +1,6 @@
-akerl/pkgforge-golang-helper
+/pkgforge-golang-helper
 ==========
 
-[![Automated Build](https://img.shields.io/docker/build/akerl/pkgforge-golang-helper.svg)](https://hub.docker.com/r/akerl/pkgforge-golang-helper/)
-[![Build Status](https://img.shields.io/circleci/project/akerl/pkgforge-golang-helper/master.svg)](https://circleci.com/gh/akerl/pkgforge-golang-helper)
 [![MIT Licensed](https://img.shields.io/badge/license-MIT-green.svg)](https://tldrlegal.com/license/mit-license)
 
 Helper repo for building golang packages with [pkgforge](https://github.com/akerl/pkgforge)
