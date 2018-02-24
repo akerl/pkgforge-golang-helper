@@ -1,13 +1,13 @@
 .PHONY: default build clean lint vet fmt test deps init update
 
-PACKAGE = madlibrarian-lambda
-NAMESPACE = github.com/akerl
+include Makefile.local
 VERSION ?= $(shell git describe --tags --always --dirty --match=v* 2>/dev/null)
 export GOPATH = $(CURDIR)/.gopath
 BIN = $(GOPATH)/bin
 BASEDIR = $(GOPATH)/src/$(NAMESPACE)
 BASE = $(BASEDIR)/$(PACKAGE)
 GOFILES = $(shell find . -type f -name '*.go' ! -path './.*' ! -path './vendor/*')
+OSLIST ?= linux darwin
 
 GO = go
 GOFMT = gofmt
@@ -20,7 +20,7 @@ build: $(BASE) deps $(GOX) fmt lint vet test
 		-ldflags '-X $(NAMESPACE)/$(PACKAGE)/cmd.Version=$(VERSION)' \
 		-gocmd="$(GO)" \
 		-output="bin/$(PACKAGE)_{{.OS}}" \
-		-os="linux" \
+		-os="$(OSLIST)" \
 		-arch="amd64"
 	@echo "Build completed"
 
@@ -67,3 +67,16 @@ $(GOX): $(BASE)
 
 $(GODEP): $(BASE)
 	$(GO) get github.com/golang/dep/cmd/dep
+
+manual:
+	make -f pkgforge-helper manual
+
+pfbuild:
+	make -f pkgforge-helper
+
+pftest:
+	make -f pkgforge-helper build
+
+pfrelease:
+	make -f pkgforge-helper release
+
