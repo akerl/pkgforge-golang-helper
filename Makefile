@@ -1,4 +1,4 @@
-.PHONY: default build clean lint vet fmt test deps init update
+.PHONY: default local build release manual clean lint vet fmt test deps init update
 
 HELPER_PATH := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 
@@ -17,7 +17,7 @@ GOX = $(BIN)/gox
 GOLINT = $(BIN)/golint
 GODEP = $(BIN)/dep
 
-build: $(BASE) deps $(GOX) fmt lint vet test
+local: $(BASE) deps $(GOX) fmt lint vet test
 	cd $(BASE) && $(GOX) \
 		-ldflags '-X $(NAMESPACE)/$(PACKAGE)/cmd.Version=$(VERSION)' \
 		-gocmd="$(GO)" \
@@ -72,12 +72,12 @@ $(GODEP): $(BASE)
 
 PKGFORGE_MAKE = make -f $(HELPER_PATH)/pkgforge-helper/Makefile
 
-pfmanual:
+manual:
 	$(PKGFORGE_MAKE) manual
 
-pfbuild:
+build:
 	$(PKGFORGE_MAKE)
 
-pfrelease:
+release:
 	$(PKGFORGE_MAKE) release
 
