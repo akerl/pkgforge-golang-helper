@@ -1,5 +1,7 @@
 .PHONY: default build clean lint vet fmt test deps init update
 
+HELPER_PATH := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
+
 include Makefile.local
 VERSION ?= $(shell git describe --tags --always --dirty --match=v* 2>/dev/null)
 export GOPATH = $(CURDIR)/.gopath
@@ -68,15 +70,14 @@ $(GOX): $(BASE)
 $(GODEP): $(BASE)
 	$(GO) get github.com/golang/dep/cmd/dep
 
-manual:
-	make -f pkgforge-helper manual
+PKGFORGE_MAKE = make -f $(HELPER_PATH)/pkgforge-helper/Makefile
+
+pfmanual:
+	$(PKGFORGE_MAKE) manual
 
 pfbuild:
-	make -f pkgforge-helper
-
-pftest:
-	make -f pkgforge-helper build
+	$(PKGFORGE_MAKE)
 
 pfrelease:
-	make -f pkgforge-helper release
+	$(PKGFORGE_MAKE) release
 
