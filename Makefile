@@ -1,64 +1,69 @@
-DOCKER_CMD = docker run \
-	--rm -t -i \
-	-v $$(pwd):/opt/build \
-	-v /tmp:/tmp \
-	$(DOCKER_FLAGS) \
-	$(CONTAINER_NAME)
+.PHONY: default build clean lint vet fmt test deps init update
 
-.PHONY : default manual dircheck container prereqs release build
+PACKAGE = madlibrarian-lambda
+NAMESPACE = github.com/akerl
+VERSION ?= $(shell git describe --tags --always --dirty --match=v* 2>/dev/null)
+export GOPATH = $(CURDIR)/.gopath
+BIN = $(GOPATH)/bin
+BASEDIR = $(GOPATH)/src/$(NAMESPACE)
+BASE = $(BASEDIR)/$(PACKAGE)
+GOFILES = $(shell find . -type f -name '*.go' ! -path './.*' ! -path './vendor/*')
 
-default: prereqs
-	$(DOCKER_CMD) pkgforge build $(PKGFORGE_FLAGS)
+GO = go
+GOFMT = gofmt
+GOX = $(BIN)/gox
+GOLINT = $(BIN)/golint
+GODEP = $(BIN)/dep
 
-build: prereqs
-	pkgforge build -ts
+build: $(BASE) deps $(GOX) fmt lint vet test
+	cd $(BASE) && $(GOX) \
+		-ldflags '-X $(NAMESPACE)/$(PACKAGE)/cmd.Version=$(VERSION)' \
+		-gocmd="$(GO)" \
+		-output="bin/$(PACKAGE)_{{.OS}}" \
+		-os="linux" \
+		-arch="amd64"
+	@echo "Build completed"
 
-release: prereqs
-	$(DOCKER_CMD) pkgforge release $(PKGFORGE_FLAGS)
+clean:
+	rm -rf $(GOPATH) bin
 
-manual: prereqs
-	$(DOCKER_CMD) bash || true
+lint: $(GOLINT)
+	$(GOLINT) -set_exit_status $$($(GO) list -f '{{.Dir}}' ./...)
 
-prereqs: dircheck container auth
+vet:
+	cd $(BASE) && $(GO) vet ./...
 
-ifdef GITHUB_CREDS
-GITHUB_CRED_NAME ?= targit
-auth:
-	@echo "$(GITHUB_CRED_NAME): $(GITHUB_CREDS)" > .github || true
-else
-auth:
-	@true
-endif
+fmt:
+	@echo "Running gofmt on $(GOFILES)"
+	@files=$$($(GOFMT) -l $(GOFILES)); if [ -n "$$files" ]; then \
+		  echo "Error: '$(GOFMT)' needs to be run on:"; \
+		  echo "$${files}"; \
+		  exit 1; \
+		  fi;
 
-PKGFORGE_FLAGS =
-ifdef PKGFORGE_STATEFILE
-PKGFORGE_FLAGS += --statefile $(PKGFORGE_STATEFILE)
-endif
-ifdef DEBUG
-PKGFORGE_FLAGS += -ts
-endif
+test: deps
+	cd $(BASE) && $(GO) test ./...
 
-ifneq ("$(wildcard .pkgforge)","")
-dircheck:
-	@true
-else
-dircheck:
-	@echo ".pkgforge not found; run make from the repo root"
-	@false
-endif
+init: $(BASE) $(GODEP)
+	cd $(BASE) && $(GODEP) init
 
-ifneq ("$(wildcard Dockerfile)","")
-CONTAINER_NAME = $$(awk '/^name / {print $$2}' .pkgforge | tr -d "'")-pkg
-container:
-	docker build -t $(CONTAINER_NAME) .
-else
-CONTAINER_NAME = dock0/pkgforge
-container:
-	@true
-endif
+update: $(BASE) $(GODEP)
+	cd $(BASE) && $(GODEP) ensure -update
 
-ifneq ("$(wildcard docker.conf)","")
-DOCKER_FLAGS = $$(cat docker.conf)
-else
-DOCKER_FLAGS =
-endif
+deps: $(BASE) $(GODEP)
+	cd $(BASE) && $(GODEP) ensure
+
+$(BASEDIR):
+	mkdir -p $(BASEDIR)
+
+$(BASE): $(BASEDIR)
+	ln -s $(CURDIR) $(BASE)
+
+$(GOLINT): $(BASE)
+	$(GO) get github.com/golang/lint/golint
+
+$(GOX): $(BASE)
+	$(GO) get github.com/mitchellh/gox
+
+$(GODEP): $(BASE)
+	$(GO) get github.com/golang/dep/cmd/dep
