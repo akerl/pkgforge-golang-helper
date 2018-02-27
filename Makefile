@@ -54,6 +54,9 @@ init: $(BASE) $(GODEP)
 update: $(BASE) $(GODEP)
 	cd $(BASE) && $(GODEP) ensure -update
 
+status: $(BASE) $(GODEP)
+	cd $(BASE) && $(GODEP) status $(STATUS_FLAGS)
+
 deps: $(BASE) $(GODEP)
 	cd $(BASE) && $(GODEP) ensure
 
