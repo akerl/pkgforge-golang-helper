@@ -29,7 +29,7 @@ local: $(BASE) deps $(GOX) fmt lint vet test
 	@echo "Build completed"
 
 clean:
-	rm -rf $(GOPATH) bin
+	rm -rf $(GOPATH) bin vendor
 
 lint: $(GOLINT)
 	$(GOLINT) -set_exit_status $$($(GO) list -f '{{.Dir}}' ./...)
