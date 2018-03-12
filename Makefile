@@ -3,7 +3,7 @@
 HELPER_PATH := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 
 include Makefile.local
-VERSION ?= $(shell git describe --tags --always --dirty --match=v* 2>/dev/null)
+VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null)
 export GOPATH = $(CURDIR)/.gopath
 BIN = $(GOPATH)/bin
 BASEDIR = $(GOPATH)/src/$(NAMESPACE)
