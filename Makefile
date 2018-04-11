@@ -1,4 +1,4 @@
-.PHONY: default local build release manual clean lint vet fmt test deps init update generate
+.PHONY: default local build release manual clean lint vet fmt test deps init update
 
 HELPER_PATH := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 
@@ -19,7 +19,7 @@ GODEP = $(BIN)/dep
 
 default: build
 
-local: $(BASE) deps $(GOX) generate fmt lint vet test
+local: $(BASE) deps $(GOX) fmt lint vet test
 	cd $(BASE) && $(GOX) \
 		-ldflags '-X $(NAMESPACE)/$(PACKAGE)/cmd.Version=$(VERSION)' \
 		-gocmd="$(GO)" \
@@ -47,9 +47,6 @@ fmt:
 
 test: deps
 	cd $(BASE) && $(GO) test ./...
-
-generate: deps
-	cd $(BASE) && $(GO) generate
 
 init: $(BASE) $(GODEP)
 	cd $(BASE) && $(GODEP) init
