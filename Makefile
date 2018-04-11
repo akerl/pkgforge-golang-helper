@@ -1,4 +1,4 @@
-.PHONY: default local build release manual clean lint vet fmt test deps init update
+.PHONY: default local build release manual clean lint vet fmt test deps init update custom
 
 HELPER_PATH := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 
@@ -19,7 +19,7 @@ GODEP = $(BIN)/dep
 
 default: build
 
-local: $(BASE) deps $(GOX) fmt lint vet test
+local: $(BASE) deps $(GOX) custom fmt lint vet test
 	cd $(BASE) && $(GOX) \
 		-ldflags '-X $(NAMESPACE)/$(PACKAGE)/cmd.Version=$(VERSION)' \
 		-gocmd="$(GO)" \
@@ -27,6 +27,9 @@ local: $(BASE) deps $(GOX) fmt lint vet test
 		-os="$(OSLIST)" \
 		-arch="amd64"
 	@echo "Build completed"
+
+custom:
+	[[ -e custom.sh ]] && ./custom.sh
 
 clean:
 	rm -rf $(GOPATH) bin vendor
