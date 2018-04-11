@@ -6,6 +6,7 @@ include Makefile.local
 VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null)
 export GOPATH = $(CURDIR)/.gopath
 BIN = $(GOPATH)/bin
+export PATH := $(BIN):$(PATH)
 BASEDIR = $(GOPATH)/src/$(NAMESPACE)
 BASE = $(BASEDIR)/$(PACKAGE)
 GOFILES = $(shell find . -type f -name '*.go' ! -path './.*' ! -path './vendor/*')
