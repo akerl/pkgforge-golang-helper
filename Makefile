@@ -30,7 +30,7 @@ local: $(BASE) deps $(GOX) custom fmt lint vet test
 	@echo "Build completed"
 
 custom:
-	[[ -e custom.sh ]] && ./custom.sh
+	if [[ -e custom.sh ]] ; then ./custom.sh ; fi
 
 clean:
 	rm -rf $(GOPATH) bin vendor
