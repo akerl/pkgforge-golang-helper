@@ -15,7 +15,7 @@ OSLIST ?= linux darwin
 GO = go
 GOFMT = gofmt
 GOX = $(BIN)/gox
-GOLINT = $(BIN)/golint
+GOLINT = $(BIN)/golangci-lint
 GODEP = $(BIN)/dep
 
 default: build
@@ -35,8 +35,8 @@ custom:
 clean:
 	rm -rf $(GOPATH) bin vendor
 
-lint: $(GOLINT)
-	$(GOLINT) -set_exit_status $$($(GO) list -f '{{.Dir}}' ./...)
+lint: $(BASE) deps $(GOLINT)
+	cd $(BASE) && $(GOLINT) run --enable-all --exclude-use-default
 
 vet:
 	cd $(BASE) && $(GO) vet ./...
@@ -71,7 +71,7 @@ $(BASE): $(BASEDIR)
 	ln -s $(CURDIR) $(BASE)
 
 $(GOLINT): $(BASE)
-	$(GO) get github.com/golang/lint/golint
+	$(GO) get github.com/golangci/golangci-lint/cmd/golangci-lint
 
 $(GOX): $(BASE)
 	$(GO) get github.com/mitchellh/gox
