@@ -36,7 +36,7 @@ clean:
 	rm -rf $(GOPATH) bin vendor
 
 lint: $(BASE) deps $(GOLINT)
-	cd $(BASE) && $(GOLINT) run --enable-all --exclude-use-default
+	cd $(BASE) && $(GOLINT) run --enable-all --exclude-use-default=false
 
 vet:
 	cd $(BASE) && $(GO) vet ./...
