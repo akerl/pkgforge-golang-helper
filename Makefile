@@ -21,13 +21,17 @@ GODEP = $(BIN)/dep
 default: build
 
 local: $(BASE) deps $(GOX) custom fmt lint vet test
-	cd $(BASE) && $(GOX) \
+ifdef LIB_ONLY
+    @echo "Skipping build for library-only repo"
+else
+	[[ -z "$(LIB_ONLY)" ]] && cd $(BASE) && $(GOX) \
 		-ldflags '-X $(NAMESPACE)/$(PACKAGE)/cmd.Version=$(VERSION)' \
 		-gocmd="$(GO)" \
 		-output="bin/$(PACKAGE)_{{.OS}}" \
 		-os="$(OSLIST)" \
 		-arch="amd64"
 	@echo "Build completed"
+endif
 
 custom:
 	if [[ -e custom.sh ]] ; then ./custom.sh ; fi
