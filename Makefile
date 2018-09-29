@@ -24,7 +24,7 @@ local: $(BASE) deps $(GOX) custom fmt lint vet test
 ifdef LIB_ONLY
 	@echo "Skipping build for library-only repo"
 else
-	[[ -z "$(LIB_ONLY)" ]] && cd $(BASE) && $(GOX) \
+	cd $(BASE) && $(GOX) \
 		-ldflags '-X $(NAMESPACE)/$(PACKAGE)/cmd.Version=$(VERSION)' \
 		-gocmd="$(GO)" \
 		-output="bin/$(PACKAGE)_{{.OS}}" \
