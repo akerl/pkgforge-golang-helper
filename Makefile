@@ -22,7 +22,7 @@ default: build
 
 local: $(BASE) deps $(GOX) custom fmt lint vet test
 ifdef LIB_ONLY
-    @echo "Skipping build for library-only repo"
+	@echo "Skipping build for library-only repo"
 else
 	[[ -z "$(LIB_ONLY)" ]] && cd $(BASE) && $(GOX) \
 		-ldflags '-X $(NAMESPACE)/$(PACKAGE)/cmd.Version=$(VERSION)' \
