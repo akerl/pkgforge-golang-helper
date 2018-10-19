@@ -20,7 +20,7 @@ GODEP = $(BIN)/dep
 
 default: build
 
-local: $(BASE) deps $(GOX) custom fmt lint vet test
+local: $(BASE) custom deps $(GOX) fmt lint vet test
 ifdef LIB_ONLY
 	@echo "Skipping build for library-only repo"
 else
