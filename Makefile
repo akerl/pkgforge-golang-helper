@@ -37,7 +37,7 @@ custom:
 	if [[ -e custom.sh ]] ; then ./custom.sh ; fi
 
 clean:
-	chmod -R w+x $(GOPATH)
+	chmod -R a+w $(GOPATH)
 	rm -rf $(GOPATH) bin
 
 lint: $(GOLINT)
