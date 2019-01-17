@@ -69,5 +69,5 @@ $(GOX):
 	go get github.com/mitchellh/gox@v0.4.0
 
 $(GOLINT):
-	go get github.com/golangci/golangci-lint@v1.12.5
+	go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.12.5
 
