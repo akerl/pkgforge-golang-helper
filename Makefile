@@ -67,7 +67,7 @@ release:
 	$(PKGFORGE_MAKE) release
 
 $(GOX):
-	$(GO) get github.com/mitchellh/gox
+	$(GO) install github.com/mitchellh/gox
 
 $(GOLINT):
-	$(GO) get github.com/golangci/golangci-lint/cmd/golangci-lint
+	$(GO) install github.com/golangci/golangci-lint/cmd/golangci-lint
