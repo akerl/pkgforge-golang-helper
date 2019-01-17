@@ -39,7 +39,7 @@ custom:
 clean:
 	rm -rf $(GOPATH) bin
 
-lint:
+lint: $(GOLINT)
 	$(GOLINT) run --enable-all --exclude-use-default=false --disable=gochecknoglobals --disable=gochecknoinits
 
 vet:
