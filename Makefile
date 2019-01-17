@@ -1,4 +1,4 @@
-.PHONY: default local custom clean lint vet fmt test manual build release
+.PHONY: default local custom clean lint vet fmt test deps manual build release
 
 HELPER_PATH := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 PKGFORGE_MAKE = make -f $(HELPER_PATH)/pkgforge-helper/Makefile
@@ -20,7 +20,7 @@ GOLINT = $(BIN)/golangci-lint
 
 default: build
 
-local: custom fmt lint vet test
+local: deps custom fmt lint vet test
 ifdef LIB_ONLY
 	@echo "Skipping build for library-only repo"
 else
@@ -40,7 +40,7 @@ clean:
 	if [[ -e $(GOPATH) ]] ; then chmod -R a+w $(GOPATH) ; fi
 	rm -rf $(GOPATH) bin
 
-lint:
+lint: deps
 	$(GOLINT) run --enable-all --exclude-use-default=false --disable=gochecknoglobals --disable=gochecknoinits
 
 vet:
@@ -56,6 +56,9 @@ fmt:
 
 test:
 	$(GO) test ./...
+
+deps:
+	$(GO) get
 
 manual:
 	$(PKGFORGE_MAKE) manual
