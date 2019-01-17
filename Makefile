@@ -40,7 +40,7 @@ clean:
 	if [[ -e $(GOPATH) ]] ; then chmod -R a+w $(GOPATH) ; fi
 	rm -rf $(GOPATH) bin
 
-lint: $(GOLINT)
+lint:
 	$(GOLINT) run --enable-all --exclude-use-default=false --disable=gochecknoglobals --disable=gochecknoinits
 
 vet:
@@ -65,10 +65,3 @@ build:
 
 release:
 	$(PKGFORGE_MAKE) release
-
-$(GOX):
-	go get github.com/mitchellh/gox@v0.4.0
-
-$(GOLINT):
-	go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.12.5
-
