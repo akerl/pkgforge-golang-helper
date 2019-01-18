@@ -16,7 +16,7 @@ export PATH := $(BIN):$(PATH)
 GO = go
 GOFMT = gofmt
 GOX = $(BIN)/gox
-GOLINT = $(BIN)/golangci-lint
+GOLINT = $(BIN)/gometalinter
 
 default: build
 
@@ -41,7 +41,7 @@ clean:
 	rm -rf $(GOPATH) bin
 
 lint: $(GOLINT)
-	$(GOLINT) run --enable-all --exclude-use-default=false --disable=gochecknoglobals --disable=gochecknoinits
+	$(GOLINT) run --enable-all ./...
 
 vet:
 	$(GO) vet ./...
@@ -70,4 +70,4 @@ $(GOX):
 	$(GO) install github.com/mitchellh/gox
 
 $(GOLINT):
-	$(GO) install github.com/golangci/golangci-lint/cmd/golangci-lint
+	$(GO) install github.com/alecthomas/gometalinter
