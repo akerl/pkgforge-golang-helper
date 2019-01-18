@@ -1,4 +1,4 @@
-.PHONY: default local custom clean lint vet fmt test manual build release
+.PHONY: default local custom clean lint fmt test manual build release
 
 HELPER_PATH := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 PKGFORGE_MAKE = make -f $(HELPER_PATH)/pkgforge-helper/Makefile
@@ -16,11 +16,12 @@ export PATH := $(BIN):$(PATH)
 GO = go
 GOFMT = gofmt
 GOX = $(BIN)/gox
-GOLINT = $(BIN)/gometalinter
+REVIVE = $(BIN)/revive
+GOSEC = $(BIN)/gosec
 
 default: build
 
-local: custom fmt lint vet test $(GOX)
+local: custom fmt lint test $(GOX)
 ifdef LIB_ONLY
 	@echo "Skipping build for library-only repo"
 else
@@ -40,11 +41,10 @@ clean:
 	if [[ -e $(GOPATH) ]] ; then chmod -R a+w $(GOPATH) ; fi
 	rm -rf $(GOPATH) bin
 
-lint: $(GOLINT)
-	$(GOLINT) run --enable-all ./...
-
-vet:
+lint: $(REVIVE) $(GOSEC)
 	$(GO) vet ./...
+	$(REVIVE) ./...
+	$(GOSEC) ./...
 
 fmt:
 	@echo "Running gofmt on $(GOFILES)"
@@ -69,5 +69,8 @@ release:
 $(GOX):
 	$(GO) install github.com/mitchellh/gox
 
-$(GOLINT):
-	$(GO) install github.com/alecthomas/gometalinter
+$(REVIVE):
+	$(GO) install github.com/mgechev/revive
+
+$(GOSEC):
+	$(GO) install github.com/securego/gosec/cmd/gosec
