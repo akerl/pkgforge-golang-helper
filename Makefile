@@ -46,7 +46,8 @@ lint: $(REVIVE) $(GOSEC)
 	$(REVIVE) ./...
 	# TODO: Remove gopath hax
 	mkdir -p $(GOPATH)/src/$(NAMESPACE)
-	ln -s $(CURDIR) $(GOPATH)/src/$(NAMESPACE)/$(PACKAGE)
+	rm -rf $(GOPATH)/src/$(NAMESPACE)/$(PACKAGE)
+	cp -R $(CURDIR) $(GOPATH)/src/$(NAMESPACE)/$(PACKAGE)
 	cd $(GOPATH)/src/$(NAMESPACE)/$(PACKAGE) &&	$(GOSEC) ./...
 
 fmt:
