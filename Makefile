@@ -17,7 +17,6 @@ GO = go
 GOFMT = gofmt
 GOX = $(BIN)/gox
 REVIVE = $(BIN)/revive
-GOSEC = $(BIN)/gosec
 
 default: build
 
@@ -41,14 +40,9 @@ clean:
 	if [[ -e $(GOPATH) ]] ; then chmod -R a+w $(GOPATH) ; fi
 	rm -rf $(GOPATH) bin
 
-lint: $(REVIVE) $(GOSEC)
+lint: $(REVIVE)
 	$(GO) vet ./...
 	$(REVIVE) ./...
-	# TODO: Remove gopath hax
-	mkdir -p $(GOPATH)/src/$(NAMESPACE)
-	rm -rf $(GOPATH)/src/$(NAMESPACE)/$(PACKAGE)
-	cp -R $(CURDIR) $(GOPATH)/src/$(NAMESPACE)/$(PACKAGE)
-	cd $(GOPATH)/src/$(NAMESPACE)/$(PACKAGE) &&	$(GOSEC) ./...
 
 fmt:
 	@echo "Running gofmt on $(GOFILES)"
@@ -76,5 +70,3 @@ $(GOX):
 $(REVIVE):
 	$(GO) install github.com/mgechev/revive
 
-$(GOSEC):
-	$(GO) install github.com/securego/gosec/cmd/gosec
