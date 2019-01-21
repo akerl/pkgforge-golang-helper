@@ -70,3 +70,6 @@ $(GOX):
 $(REVIVE):
 	cd $(GOPATH) && $(GO) install github.com/mgechev/revive
 
+$(GOPATH):
+	mkdir -p $(GOPATH)
+
