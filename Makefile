@@ -64,10 +64,10 @@ build:
 release:
 	$(PKGFORGE_MAKE) release
 
-$(GOX):
+$(GOX): $(GOPATH)
 	cd $(GOPATH) && $(GO) install github.com/mitchellh/gox
 
-$(REVIVE):
+$(REVIVE): $(GOPATH)
 	cd $(GOPATH) && $(GO) install github.com/mgechev/revive
 
 $(GOPATH):
