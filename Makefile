@@ -65,8 +65,8 @@ release:
 	$(PKGFORGE_MAKE) release
 
 $(GOX):
-	$(GO) install github.com/mitchellh/gox
+	cd $(GOPATH) && $(GO) install github.com/mitchellh/gox
 
 $(REVIVE):
-	$(GO) install github.com/mgechev/revive
+	cd $(GOPATH) && $(GO) install github.com/mgechev/revive
 
