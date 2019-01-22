@@ -10,7 +10,9 @@ OSLIST ?= linux darwin
 GOFILES = $(shell find . -type f -name '*.go' ! -path './.gopath/*')
 
 export GOPATH = $(CURDIR)/.gopath
-BIN = $(GOPATH)/bin
+
+TOOLPATH = $(CURDIR)/.tools
+BIN = $(TOOLPATH)/bin
 export PATH := $(BIN):$(PATH)
 
 GO = go
@@ -38,7 +40,7 @@ custom:
 
 clean:
 	if [[ -e $(GOPATH) ]] ; then chmod -R a+w $(GOPATH) ; fi
-	rm -rf $(GOPATH) bin
+	rm -rf $(GOPATH) $(TOOLPATH) bin
 
 lint: $(REVIVE)
 	$(GO) vet ./...
@@ -64,12 +66,12 @@ build:
 release:
 	$(PKGFORGE_MAKE) release
 
-$(GOX): $(GOPATH)
-	GO111MODULE=on cd $(GOPATH) && $(GO) install github.com/mitchellh/gox
+$(GOX): $(TOOLPATH)
+	cd $(TOOLPATH) && $(GO) install github.com/mitchellh/gox
 
-$(REVIVE): $(GOPATH)
-	GO111MODULE=on cd $(GOPATH) && $(GO) install github.com/mgechev/revive
+$(REVIVE): $(TOOLPATH)
+	cd $(TOOLPATH) && $(GO) install github.com/mgechev/revive
 
-$(GOPATH):
-	mkdir -p $(GOPATH)
-
+$(TOOLPATH):
+	mkdir -p $(TOOLPATH)
+	cd $(TOOLPATH) && go mod init
