@@ -65,10 +65,10 @@ release:
 	$(PKGFORGE_MAKE) release
 
 $(GOX): $(GOPATH)
-	cd $(GOPATH) && $(GO) install github.com/mitchellh/gox
+	GO111MODULE=on cd $(GOPATH) && $(GO) install github.com/mitchellh/gox
 
 $(REVIVE): $(GOPATH)
-	cd $(GOPATH) && $(GO) install github.com/mgechev/revive
+	GO111MODULE=on cd $(GOPATH) && $(GO) install github.com/mgechev/revive
 
 $(GOPATH):
 	mkdir -p $(GOPATH)
