@@ -10,10 +10,10 @@ OSLIST ?= linux darwin
 GOFILES = $(shell find . -type f -name '*.go' ! -path './.gopath/*')
 
 export GOPATH = $(CURDIR)/.gopath
+BIN = $(GOPATH)/bin
+export PATH := $(BIN):$(PATH)
 
 TOOLPATH = $(CURDIR)/.tools
-BIN = $(TOOLPATH)/bin
-export PATH := $(BIN):$(PATH)
 
 GO = go
 GOFMT = gofmt
