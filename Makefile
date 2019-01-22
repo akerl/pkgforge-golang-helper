@@ -72,6 +72,8 @@ $(GOX): $(TOOLPATH)
 $(REVIVE): $(TOOLPATH)
 	cd $(TOOLPATH) && $(GO) install github.com/mgechev/revive
 
-$(TOOLPATH):
+$(TOOLPATH): $(TOOLPATH)/go.mod
+
+$(TOOLPATH)/go.mod:
 	mkdir -p $(TOOLPATH)
-	cd $(TOOLPATH) && go mod init
+	cd $(TOOLPATH) && go mod init tools
