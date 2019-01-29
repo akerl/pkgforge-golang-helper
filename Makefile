@@ -40,7 +40,7 @@ custom:
 
 clean:
 	if [[ -e $(GOPATH) ]] ; then chmod -R a+w $(GOPATH) ; fi
-	rm -rf $(GOPATH) $(TOOLPATH) bin
+	rm -rf $(GOPATH) $(TOOLPATH) bin Dockerfile
 
 lint: $(REVIVE)
 	$(GO) vet ./...
