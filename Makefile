@@ -57,14 +57,17 @@ fmt:
 test:
 	$(GO) test ./...
 
-manual:
+manual: Dockerfile
 	$(PKGFORGE_MAKE) manual
 
-build:
+build: Dockerfile
 	$(PKGFORGE_MAKE)
 
-release:
+release: Dockerfile
 	$(PKGFORGE_MAKE) release
+
+Dockerfile:
+	cp $(HELPER_PATH)/Dockerfile ./Dockerfile
 
 $(GOX): $(TOOLPATH)
 	cd $(TOOLPATH) && $(GO) install github.com/mitchellh/gox
