@@ -67,7 +67,11 @@ release: Dockerfile
 	$(PKGFORGE_MAKE) release
 
 Dockerfile:
+ifneq ("$(wildcard Dockerfile.local)","")
+	cp Dockerfile.local Dockerfile
+else
 	cp $(HELPER_PATH)/Dockerfile ./Dockerfile
+endif
 
 $(GOX): $(TOOLPATH)
 	cd $(TOOLPATH) && $(GO) install github.com/mitchellh/gox
