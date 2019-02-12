@@ -31,7 +31,8 @@ else
 		-gocmd="$(GO)" \
 		-output="bin/$(PACKAGE)_{{.OS}}" \
 		-os="$(OSLIST)" \
-		-arch="amd64"
+		-arch="amd64" \
+		${GOX_EXTRA_FLAGS}
 	@echo "Build completed"
 endif
 
@@ -74,7 +75,8 @@ else
 endif
 
 $(GOX): $(TOOLPATH)
-	cd $(TOOLPATH) && $(GO) install github.com/akerl/gox
+	cd $(TOOLPATH) && $(GO) mod edit -replace=github.com/mitchellh/gox=github.com/akerl/gox@4eb79c9
+	cd $(TOOLPATH) && $(GO) get github.com/mitchellh/gox
 
 $(REVIVE): $(TOOLPATH)
 	cd $(TOOLPATH) && $(GO) install github.com/mgechev/revive
