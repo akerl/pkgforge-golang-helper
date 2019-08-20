@@ -1,4 +1,4 @@
-.PHONY: default local custom clean lint fmt test manual build release
+.PHONY: default local custom clean lint fmt test manual build release tidy
 
 HELPER_PATH := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 PKGFORGE_MAKE = make -f $(HELPER_PATH)/pkgforge-helper/Makefile
@@ -24,7 +24,10 @@ REVIVE = $(BIN)/revive
 
 default: build
 
-local: custom fmt lint test $(GOX)
+tidy:
+	$(GO) mod tidy
+
+local: custom tidy fmt lint test $(GOX)
 ifdef LIB_ONLY
 	@echo "Skipping build for library-only repo"
 else
