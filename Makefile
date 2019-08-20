@@ -5,7 +5,7 @@ PKGFORGE_MAKE = make -f $(HELPER_PATH)/pkgforge-helper/Makefile
 
 include Makefile.local
 
-MOD_PATH := $(shell go list -m)
+MOD_PATH = $(shell go list -m)
 
 VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null)
 OSLIST ?= linux darwin
