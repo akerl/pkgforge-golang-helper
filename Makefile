@@ -6,6 +6,7 @@ PKGFORGE_MAKE = make -f $(HELPER_PATH)/pkgforge-helper/Makefile
 include Makefile.local
 
 MOD_PATH = $(shell go list -m)
+VERSION_VAR_PATH ?= cmd.Version
 
 VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null)
 OSLIST ?= linux darwin
@@ -32,7 +33,7 @@ ifdef LIB_ONLY
 	@echo "Skipping build for library-only repo"
 else
 	$(GOX) \
-		-ldflags '-X $(MOD_PATH)/cmd.Version=$(VERSION)' \
+		-ldflags '-X $(MOD_PATH)/$(VERSION_VAR_PATH)=$(VERSION)' \
 		-gocmd="$(GO)" \
 		-output="bin/$(PACKAGE)_{{.OS}}" \
 		-os="$(OSLIST)" \
