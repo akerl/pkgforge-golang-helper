@@ -11,6 +11,7 @@ VERSION_VAR_PATH ?= cmd.Version
 VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null)
 OSLIST ?= linux darwin
 ARCHLIST ?= amd64
+OUTPUT_FORMAT ?= bin/$(PACKAGE)_{{.OS}}
 GOFILES = $(shell find . -type f -name '*.go' ! -path './.gopath/*')
 
 export GOPATH = $(CURDIR)/.gopath
@@ -36,7 +37,7 @@ else
 	$(GOX) \
 		-ldflags '-X $(MOD_PATH)/$(VERSION_VAR_PATH)=$(VERSION)' \
 		-gocmd="$(GO)" \
-		-output="bin/$(PACKAGE)_{{.OS}}" \
+		-output="$(OUTPUT_FORMAT)" \
 		-os="$(OSLIST)" \
 		-arch="$(ARCHLIST)" \
 		${GOX_EXTRA_FLAGS}
