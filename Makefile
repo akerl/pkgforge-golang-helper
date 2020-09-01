@@ -10,6 +10,7 @@ VERSION_VAR_PATH ?= cmd.Version
 
 VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null)
 OSLIST ?= linux darwin
+ARCHLIST ?= amd64
 GOFILES = $(shell find . -type f -name '*.go' ! -path './.gopath/*')
 
 export GOPATH = $(CURDIR)/.gopath
@@ -37,7 +38,7 @@ else
 		-gocmd="$(GO)" \
 		-output="bin/$(PACKAGE)_{{.OS}}" \
 		-os="$(OSLIST)" \
-		-arch="amd64" \
+		-arch="$(ARCHLIST)" \
 		${GOX_EXTRA_FLAGS}
 	@echo "Build completed"
 endif
