@@ -87,7 +87,7 @@ $(GOX): $(TOOLPATH)
 	cd $(TOOLPATH) && $(GO) get github.com/mitchellh/gox
 
 $(REVIVE): $(TOOLPATH)
-	cd $(TOOLPATH) && $(GO) install github.com/mgechev/revive
+	cd $(TOOLPATH) && $(GO) install github.com/mgechev/revive@latest
 
 $(TOOLPATH): $(TOOLPATH)/go.mod
 
