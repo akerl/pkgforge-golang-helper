@@ -11,7 +11,7 @@ VERSION_VAR_PATH ?= cmd.Version
 VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null)
 OSLIST ?= linux darwin
 ARCHLIST ?= amd64
-OUTPUT_FORMAT ?= bin/$(PACKAGE)_{{.OS}}
+OUTPUT_FORMAT ?= bin/$(PACKAGE)_{{.OS}}_{{.Arch}}
 GOFILES = $(shell find . -type f -name '*.go' ! -path './.gopath/*')
 
 export GOPATH = $(CURDIR)/.gopath
