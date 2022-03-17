@@ -9,8 +9,7 @@ MOD_PATH = $(shell go list -m)
 VERSION_VAR_PATH ?= cmd.Version
 
 VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null)
-OSLIST ?= linux darwin
-ARCHLIST ?= amd64
+OSARCHLIST ?= darwin/amd64 darwin/arm64 linux/amd64 linux/arm linux/arm64
 OUTPUT_FORMAT ?= bin/$(PACKAGE)_{{.OS}}_{{.Arch}}
 GOFILES = $(shell find . -type f -name '*.go' ! -path './.gopath/*')
 
@@ -38,8 +37,7 @@ else
 		-ldflags '-X $(MOD_PATH)/$(VERSION_VAR_PATH)=$(VERSION)' \
 		-gocmd="$(GO)" \
 		-output="$(OUTPUT_FORMAT)" \
-		-os="$(OSLIST)" \
-		-arch="$(ARCHLIST)" \
+		-osarch="$(OSARCHLIST)" \
 		${GOX_EXTRA_FLAGS}
 	@echo "Build completed"
 endif
