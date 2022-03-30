@@ -1,1 +1,1 @@
-FROM docker.pkg.github.com/dock0/pkgforge-golang/pkgforge-golang
+FROM ghcr.io/dock0/pkgforge-golang:latest
