@@ -81,7 +81,7 @@ else
 endif
 
 $(GOX): $(TOOLPATH)
-	cd $(TOOLPATH) && $(GO) install github.com/akerl/gox@latest
+	cd $(TOOLPATH) && $(GO) install github.com/akerl/gox@b420b2b
 
 $(REVIVE): $(TOOLPATH)
 	cd $(TOOLPATH) && $(GO) install github.com/mgechev/revive@latest
