@@ -81,6 +81,7 @@ else
 endif
 
 $(GOX): $(TOOLPATH)
+	cd $(TOOLPATH) && $(GO) mod edit -replace=github.com/mitchellh/gox=github.com/akerl/gox@b420b2b
 	cd $(TOOLPATH) && $(GO) install github.com/akerl/gox@b420b2b
 
 $(REVIVE): $(TOOLPATH)
